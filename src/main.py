@@ -1,5 +1,4 @@
 import click
-import json
 import sys
 # Fix path to ensure imports work when running as script/module
 import os
@@ -31,10 +30,8 @@ def main(old_spec_file, new_spec_file, output_file):
         sys.exit(1)
         
     # 2. Compare Specs
-    click.echo(f"DEBUG: Loading differ from {compare_specs.__globals__['__file__']}")
     click.echo("Comparing specifications...")
     diff_result = compare_specs(old_spec, new_spec)
-    print(f"DEBUG: main.py received diff_result: {diff_result}")
     
     # 3. Score Changes
     raw_score = calculate_raw_score(diff_result)

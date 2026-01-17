@@ -45,7 +45,7 @@ python -m src.main --old path/to/old_spec.yaml --new path/to/new_spec.yaml
 *   `--new`: Path to the new OpenAPI specification file (Required).
 *   `--output`: (Optional) Path to save the report (e.g., `report.txt`). If omitted, prints to console.
 
-## Intepreting the Score
+## Interpreting the Score
 
 *   **1-3 (Low Risk)**: Routine changes (e.g., adding optional fields). Safe to merge.
 *   **4-6 (Medium Risk)**: Requires careful review (e.g., deprecations).

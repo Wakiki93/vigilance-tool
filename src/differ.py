@@ -1,5 +1,5 @@
 from deepdiff import DeepDiff
-import sys
+
 
 def compare_specs(old_spec, new_spec):
     """
@@ -34,13 +34,13 @@ def compare_specs(old_spec, new_spec):
                     })
                 # Method removed: ['paths', '/users/{id}', 'get']
                 elif rel_len == 3:
-                     method = path_list[idx+2]
-                     differences.append({
+                    method = path_list[idx+2]
+                    differences.append({
                         'type': 'method-removed',
                         'path': api_path,
                         'method': method,
                         'severity': 'breaking'
-                     })
+                    })
 
     # 2. Values Changed (Method Swapping / Complex Changes)
     if 'values_changed' in ddiff:
@@ -92,45 +92,44 @@ def compare_specs(old_spec, new_spec):
     # 4. Additions (Required parameter added)
     # Check both iterable_item_added (list) and dictionary_item_added (dict val)
     if 'iterable_item_added' in ddiff:
-         for node in ddiff['iterable_item_added']:
+        for node in ddiff['iterable_item_added']:
             val = node.t2
             path_list = node.path(output_format='list')
             if isinstance(val, dict) and val.get('required') == True:
-                 if 'parameters' in path_list:
-                     p_idx = path_list.index('parameters')
-                     api_path = path_list[1] if len(path_list) > 1 else '?'
-                     method = path_list[p_idx-1] if p_idx > 1 else '*'
-                     
-                     differences.append({
-                         'type': 'parameter-required-added',
-                         'path': api_path,
-                         'method': method
-                     })
+                if 'parameters' in path_list:
+                    p_idx = path_list.index('parameters')
+                    api_path = path_list[1] if len(path_list) > 1 else '?'
+                    method = path_list[p_idx-1] if p_idx > 1 else '*'
+
+                    differences.append({
+                        'type': 'parameter-required-added',
+                        'path': api_path,
+                        'method': method
+                    })
 
     # 4b. Dictionary Item Added (New Parameters list)
     if 'dictionary_item_added' in ddiff:
         for node in ddiff['dictionary_item_added']:
             path_list = node.path(output_format='list')
-            sys.stderr.write(f"DEBUG: Dict Added path: {path_list}\n")
-            
+
             # Check if 'parameters' key was added
             if path_list and path_list[-1] == 'parameters':
                 val = node.t2
                 # val should be a list of parameters
                 if isinstance(val, list):
                     for param in val:
-                         if isinstance(param, dict) and param.get('required') == True:
-                             # found required param in new list
-                             # path_list: ['paths', '/items', 'post', 'parameters']
-                             paths_idx = get_paths_index(path_list)
-                             if paths_idx != -1:
-                                 api_path = path_list[paths_idx+1]
-                                 method = path_list[paths_idx+2]
-                                 
-                                 differences.append({
-                                     'type': 'parameter-required-added',
-                                     'path': api_path,
-                                     'method': method
-                                 })
+                        if isinstance(param, dict) and param.get('required') == True:
+                            # found required param in new list
+                            # path_list: ['paths', '/items', 'post', 'parameters']
+                            paths_idx = get_paths_index(path_list)
+                            if paths_idx != -1:
+                                api_path = path_list[paths_idx+1]
+                                method = path_list[paths_idx+2]
+
+                                differences.append({
+                                    'type': 'parameter-required-added',
+                                    'path': api_path,
+                                    'method': method
+                                })
     
     return {'differences': differences}

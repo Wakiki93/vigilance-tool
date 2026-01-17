@@ -1,5 +1,3 @@
-import math
-
 # Scoring Matrix as defined in the requirements
 BREAKING_CHANGE_SCORES = {
     "endpoint-removed": 25,
