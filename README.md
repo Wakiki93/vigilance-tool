@@ -9,9 +9,7 @@ A Python tool that compares two OpenAPI specifications, identifies changes, and 
 1.  **Clone the repository** or download the source.
 2.  **Install dependencies**:
     ```bash
-    git clone https://github.com/Wakiki93/vigilance-tool.git
-cd vigilance-tool
-pip install -r requirements.txt
+    git clone https://github.com/Wakiki93/vigilance-tool.git cd vigilance-tool pip install -r requirements.txt
 
     ```
 
