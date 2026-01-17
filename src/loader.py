@@ -1,14 +1,15 @@
-import yaml
 import json
 import os
+
+import yaml
 
 def load_openapi_spec(file_path):
     """
     Load an OpenAPI spec from a YAML or JSON file.
-    
+
     Args:
         file_path (str): Path to the specification file.
-        
+
     Returns:
         dict: The parsed specification as a dictionary, or None if loading fails.
     """
@@ -24,10 +25,10 @@ def load_openapi_spec(file_path):
             else:
                 # Default to JSON for other extensions or no extension
                 spec = json.load(f)
-                
+
         print(f"Successfully loaded {file_path}")
         return spec
-        
-    except Exception as e:
+
+    except (yaml.YAMLError, json.JSONDecodeError, IOError) as e:
         print(f"Error parsing {file_path}: {e}")
         return None

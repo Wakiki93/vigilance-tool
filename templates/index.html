@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Breaking Change Risk Vigilance Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 API Breaking Change Risk Vigilance Tool</h1>
+            <p class="subtitle">Analyze OpenAPI specification changes and assess breaking change risks</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-section">
+            <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data">
+                <div class="file-upload-group">
+                    <div class="file-upload-box">
+                        <label for="old_spec">
+                            <div class="upload-icon">📄</div>
+                            <h3>Old Specification</h3>
+                            <p>Upload the original OpenAPI spec (YAML or JSON)</p>
+                        </label>
+                        <input type="file" id="old_spec" name="old_spec" accept=".yaml,.yml,.json" required>
+                        <span class="file-name" id="old-file-name">No file chosen</span>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="file-upload-box">
+                        <label for="new_spec">
+                            <div class="upload-icon">📝</div>
+                            <h3>New Specification</h3>
+                            <p>Upload the updated OpenAPI spec (YAML or JSON)</p>
+                        </label>
+                        <input type="file" id="new_spec" name="new_spec" accept=".yaml,.yml,.json" required>
+                        <span class="file-name" id="new-file-name">No file chosen</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    <span>🚀 Analyze Changes</span>
+                </button>
+            </form>
+        </div>
+
+        <div class="info-section">
+            <h2>How it works</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>1. Upload</h3>
+                    <p>Upload your old and new OpenAPI specification files</p>
+                </div>
+                <div class="info-card">
+                    <h3>2. Analyze</h3>
+                    <p>Our tool compares the specs and identifies breaking changes</p>
+                </div>
+                <div class="info-card">
+                    <h3>3. Review</h3>
+                    <p>Get a detailed risk score (1-10) with actionable recommendations</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made with ❤️ for API developers and product managers</p>
+            <p><a href="https://github.com" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Display selected file names
+        document.getElementById('old_spec').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file chosen';
+            document.getElementById('old-file-name').textContent = fileName;
+        });
+
+        document.getElementById('new_spec').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file chosen';
+            document.getElementById('new-file-name').textContent = fileName;
+        });
+    </script>
+</body>
+</html>
