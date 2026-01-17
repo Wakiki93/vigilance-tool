@@ -2,6 +2,8 @@
 
 A Python tool that compares two OpenAPI specifications, identifies changes, and scores the risk of those changes on a 1-10 scale.
 
+**✨ Now with a Web UI!** Perfect for product managers and non-technical users.
+
 ## Installation
 
 1.  **Clone the repository** or download the source.
@@ -32,6 +34,33 @@ python src/qa.py
 ```
 
 ## Usage
+
+### 🌐 Web Interface (Recommended for Product Managers)
+
+The easiest way to use the tool is through the web interface:
+
+1. **Start the web server:**
+   ```bash
+   python web_app.py
+   ```
+
+2. **Open your browser:**
+   Navigate to `http://localhost:5000`
+
+3. **Upload and analyze:**
+   - Upload your old specification file
+   - Upload your new specification file
+   - Click "Analyze Changes"
+   - View your risk assessment with a beautiful, easy-to-understand interface!
+
+The web UI provides:
+- 📊 Visual risk score display
+- 📋 Clear, actionable recommendations
+- 🔄 Detailed list of all detected changes
+- 📱 Mobile-friendly responsive design
+- ✨ No technical knowledge required!
+
+### 💻 Command Line Interface (For Developers)
 
 Run the tool from the command line by providing the paths to the "old" (base) and "new" (head) OpenAPI specification files (YAML or JSON).
 

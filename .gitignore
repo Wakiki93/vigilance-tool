@@ -129,3 +129,7 @@ dmypy.json
 debug_*.py
 debug_*.txt
 *_dump.json
+
+# Web UI uploads
+uploads/*
+!uploads/.gitkeep
