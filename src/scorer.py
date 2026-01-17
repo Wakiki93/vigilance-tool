@@ -24,8 +24,11 @@ def calculate_raw_score(differences):
     """Calculate raw total breaking change score"""
     total_score = 0
     # Handle case where differences is a list or a dict containing a list
-    diff_list = differences if isinstance(differences, list) else differences.get('differences', [])
-    
+    if isinstance(differences, list):
+        diff_list = differences
+    else:
+        diff_list = differences.get('differences', [])
+
     for change in diff_list:
         change_type = change.get('type', 'unknown')
         score = get_change_score(change_type)
@@ -36,10 +39,10 @@ def normalize_to_1_10_scale(raw_score, max_possible_score=30):
     """Convert raw score to 1–10 risk scale"""
     if raw_score <= 0:
         return 1
-        
+
     # Normalize to 0–10 scale
     normalized = (raw_score / max_possible_score) * 10
-    
+
     # Clamp to 1–10 (never score lower than 1 if there's any risk, but 1 is min)
     # The requirement says "Scores 1-3 (Low Risk)".
     risk_score = max(1, min(10, normalized))
@@ -54,17 +57,22 @@ def determine_risk_level_and_action(risk_score):
             'message': 'Safe to deploy. No special review required.',
             'reviewer_action': 'Standard review; merge confidently.'
         }
-    elif risk_score <= 6:
+    if risk_score <= 6:
         return {
             'risk_level': 'MEDIUM',
             'emoji': '[MED]',
             'message': 'Review carefully. Some changes may impact clients.',
-            'reviewer_action': 'Require one reviewer; ensure testing coverage; notify affected teams.'
+            'reviewer_action': (
+                'Require one reviewer; ensure testing coverage; '
+                'notify affected teams.'
+            )
         }
-    else:
-        return {
-            'risk_level': 'HIGH',
-            'emoji': '[HIGH]',
-            'message': 'High-risk change. Extra vigilance required.',
-            'reviewer_action': 'Require two reviewers; mandate QA verification; consider staged rollout; notify clients.'
-        }
+    return {
+        'risk_level': 'HIGH',
+        'emoji': '[HIGH]',
+        'message': 'High-risk change. Extra vigilance required.',
+        'reviewer_action': (
+            'Require two reviewers; mandate QA verification; '
+            'consider staged rollout; notify clients.'
+        )
+    }
